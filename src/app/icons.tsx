@@ -1,9 +1,19 @@
 import React from "react";
 import type { SVGProps } from "react";
 
-export function RiFacebookFill(props: SVGProps<SVGSVGElement>) {
+interface IconProps extends SVGProps<SVGSVGElement> {
+  width: string;
+  height: string;
+}
+export function RiFacebookFill({ width, height, ...props }: IconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      {...props}
+    >
       <path
         fill="black"
         d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4z"
@@ -12,9 +22,15 @@ export function RiFacebookFill(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function MdiInstagram(props: SVGProps<SVGSVGElement>) {
+export function MdiInstagram({ width, height, ...props }: IconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      {...props}
+    >
       <path
         fill="black"
         d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"
@@ -23,9 +39,15 @@ export function MdiInstagram(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function IcBaselineWhatsapp(props: SVGProps<SVGSVGElement>) {
+export function IcBaselineWhatsapp({ width, height, ...props }: IconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      {...props}
+    >
       <path
         fill="black"
         d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01m-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23m4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.78.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31c-.22.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74c.59.26 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28"
@@ -34,9 +56,15 @@ export function IcBaselineWhatsapp(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function IcBaselineSnapchat(props: SVGProps<SVGSVGElement>) {
+export function IcBaselineSnapchat({ width, height, ...props }: IconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      {...props}
+    >
       <path
         fill="black"
         d="M21.07 16.17c-.34-.93-2.4-1.06-3.36-3.19c-.06-.16-.05-.27.11-.37c.74-.49 1.26-.76 1.56-1.33c.22-.41.25-.89.08-1.33c-.23-.61-.81-1-1.52-1c-.25 0-.45.05-.55.07c.01-.42 0-.86-.04-1.3c-.13-1.53-.67-2.34-1.23-2.98C15.79 4.37 14.48 3 12 3S8.21 4.37 7.88 4.74c-.56.64-1.1 1.45-1.23 2.98c-.03.44-.04.88-.04 1.3c-.11-.03-.3-.07-.55-.07c-.7 0-1.29.38-1.52 1c-.17.43-.14.92.08 1.33c.31.58.82.84 1.56 1.33c.16.11.17.21.11.37c-.97 2.13-3.02 2.26-3.36 3.19c-.15.4-.05.85.32 1.23c.57.59 1.63.77 1.84.91c.17.14.15.56.63.9c.38.26.8.28 1.25.29c1.31.05 1.6.27 2.1.58c.63.39 1.49.92 2.93.92s2.3-.53 2.93-.92c.5-.31.79-.53 2.1-.58c.45-.02.87-.03 1.25-.29c.49-.34.47-.76.63-.9c.21-.14 1.27-.32 1.84-.91c.37-.38.47-.83.32-1.23m-1.03.53c-.37.39-1.26.5-1.73.82c-.48.42-.4.74-.59.87c-.13.09-.36.1-.72.12c-1.4.05-1.91.31-2.52.69c-1.43.88-2.23.8-2.48.8s-1.05.08-2.47-.81c-.61-.38-1.11-.63-2.52-.69c-.36-.01-.59-.03-.72-.12c-.19-.13-.12-.45-.59-.87c-.48-.32-1.36-.43-1.73-.82c-.06-.06-.11-.14-.12-.15c.07-.1.41-.3.66-.44c.78-.46 1.98-1.14 2.71-2.75c.26-.7.03-1.26-.48-1.59c-1.15-.73-1.13-.76-1.24-.96a.62.62 0 0 1-.03-.5c.12-.32.45-.35.58-.35c.19 0 .18.01 1.57.37c-.02-1.4-.04-1.85.02-2.51c.11-1.31.57-1.93.98-2.4C8.9 5.11 9.99 3.98 12 4c2.01-.02 3.1 1.11 3.37 1.41c.41.47.87 1.09.98 2.4c.06.66.04 1.11.02 2.51c1.4-.36 1.38-.37 1.57-.37c.14 0 .46.03.58.35c.07.17.06.35-.03.5c-.11.2-.09.22-1.23.97c-.51.33-.74.89-.48 1.59c.73 1.61 1.93 2.29 2.71 2.75c.25.15.59.34.66.44c0 .01-.06.09-.11.15"
@@ -45,9 +73,15 @@ export function IcBaselineSnapchat(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function MdiGoogle(props: SVGProps<SVGSVGElement>) {
+export function MdiGoogle({ width, height, ...props }: IconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      {...props}
+    >
       <path
         fill="black"
         d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27c3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10c5.35 0 9.25-3.67 9.25-9.09c0-1.15-.15-1.81-.15-1.81"
@@ -56,17 +90,29 @@ export function MdiGoogle(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function IconParkTelegram(props: SVGProps<SVGSVGElement>) {
+export function IconParkTelegram({ width, height, ...props }: IconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 48 48"
+      {...props}
+    >
       <path d="M41.4193 7.30899C41.4193 7.30899 45.3046 5.79399 44.9808 9.47328C44.8729 10.9883 43.9016 16.2908 43.1461 22.0262L40.5559 39.0159C40.5559 39.0159 40.3401 41.5048 38.3974 41.9377C36.4547 42.3705 33.5408 40.4227 33.0011 39.9898C32.5694 39.6652 24.9068 34.7955 22.2086 32.4148C21.4531 31.7655 20.5897 30.4669 22.3165 28.9519L33.6487 18.1305C34.9438 16.8319 36.2389 13.8019 30.8426 17.4812L15.7331 27.7616C15.7331 27.7616 14.0063 28.8437 10.7686 27.8698L3.75342 25.7055C3.75342 25.7055 1.16321 24.0823 5.58815 22.459C16.3807 17.3729 29.6555 12.1786 41.4193 7.30899Z"></path>
     </svg>
   );
 }
 
-export function RiLinkedinFill(props: SVGProps<SVGSVGElement>) {
+export function RiLinkedinFill({ width, height, ...props }: IconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+      {...props}
+    >
       <path
         fill="black"
         d="M6.94 5a2 2 0 1 1-4-.002a2 2 0 0 1 4 .002M7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
