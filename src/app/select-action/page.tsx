@@ -132,7 +132,7 @@ const SelectActionPage: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-[#F5F5F5]">
         <div className="flex flex-col items-center justify-center min-h-screen">
           <div className="flex-col prose justify-center text-center">
             <h1
