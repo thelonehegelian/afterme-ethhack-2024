@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 function Navbar() {
   const [activeLink, setActiveLink] = useState<string | null>("Home");
@@ -20,14 +21,15 @@ function Navbar() {
       <div className="flex-none flex justify-center w-full">
         <ul className="menu menu-horizontal p-0">
           <li>
-            <a
+            <Link
+              href="/"
               className={`m-2 ${
                 activeLink === "Home" ? "btn btn-primary" : ""
               }`}
               onClick={() => setActiveLink("Home")}
             >
               Home
-            </a>
+            </Link>
           </li>
           <li>
             <a

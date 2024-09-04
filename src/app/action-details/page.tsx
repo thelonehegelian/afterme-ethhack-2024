@@ -4,11 +4,12 @@ import Navbar from "../components/Navbar";
 import Container from "../components/BoxContainer";
 import { CarbonNetwork4 } from "../icons";
 import Link from "next/link";
+import { IcBaselineSnapchat, MdiGoogle } from "../icons";
 
 const ActionDetailsPage: React.FC = () => {
   const detailedActions = [
-    "Account Deletion or Deactivation",
     "Final Post",
+    "Account Deletion or Deactivation",
     "Profile Conversion",
   ];
   return (
@@ -51,7 +52,11 @@ const ActionDetailsPage: React.FC = () => {
                   className="radio radio-primary"
                   defaultChecked
                 />
-                <span className="label-text ml-12">Selected account</span>
+                <span className="label-text ml-12">Selected accounts</span>
+              </div>
+              <div className="mt-4 flex w-full">
+                <IcBaselineSnapchat width="2em" height="2em" className="ml-4" />
+                <MdiGoogle width="2em" height="2em" className="ml-4" />
               </div>
             </Container>
           </div>
