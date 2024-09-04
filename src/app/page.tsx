@@ -1,13 +1,13 @@
+"use client";
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 import Link from "next/link";
-// import { DM_Serif_Text } from "next/font/google";
-// const dmSerifText = DM_Serif_Text({ weight: "400", subsets: ["latin"] });
 
 export default function Home() {
   return (
     <>
       <Navbar />
+
       <main
         className="flex min-h-screen flex-col items-center justify-between p-24"
         style={{
