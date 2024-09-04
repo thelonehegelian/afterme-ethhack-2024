@@ -3,6 +3,7 @@ import type { SVGProps } from "react";
 import Navbar from "../components/Navbar";
 import Container from "../components/BoxContainer";
 import { CarbonNetwork4 } from "../icons";
+import Link from "next/link";
 
 const ActionDetailsPage: React.FC = () => {
   const detailedActions = [
@@ -72,7 +73,9 @@ const ActionDetailsPage: React.FC = () => {
             </Container>
           </div>
           <div className="flex items-end mb-44 mr-12">
-            <button className="btn btn-secondary">Continue</button>
+            <Link href="/triggers">
+              <button className="btn btn-secondary">Continue</button>
+            </Link>
           </div>
         </div>
       </div>
