@@ -6,17 +6,22 @@ import "./ActionFrame.css";
 interface ActionFrameProps {
   icon: React.JSX.Element;
   actionText: string;
+  defaultSelection?: boolean;
 }
 
-const ActionFrame: React.FC<ActionFrameProps> = ({ icon, actionText }) => {
+const ActionFrame: React.FC<ActionFrameProps> = ({
+  icon,
+  actionText,
+  defaultSelection = false,
+}) => {
   const [hovered, setHovered] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(defaultSelection);
 
   return (
     <div
-      className={`cursor-pointer h-64 w-64 rounded flex items-center justify-center m-2 ${
+      className={`cursor-pointer h-64 w-64 rounded-2xl flex items-center justify-center m-2 ${
         isSelected
-          ? "bg-[#3758F9] hover:bg-[#2c47c7]"
+          ? "bg-[#F2CF03] hover:bg-[#F2CF03]"
           : "bg-[#D9D9D9] hover:bg-[#bfbfbf]"
       }`}
       onClick={() => setIsSelected(!isSelected)}
