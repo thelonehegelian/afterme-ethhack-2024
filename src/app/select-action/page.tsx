@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import ActionFrame from "../components/ActionFrame";
 import type { SVGProps } from "react";
+import Link from "next/link";
+import Navbar from "../components/Navbar";
 
 export function IcBaselineMessage(props: SVGProps<SVGSVGElement>) {
   return (
@@ -103,44 +105,62 @@ const SelectActionPage: React.FC = () => {
     {
       icon: <IcBaselineMessage width="4em" height="4em" />,
       actionText: "Final Post",
+      defaultSelection: true,
     },
     {
       icon: <MaterialSymbolsDelete width="4em" height="4em" />,
       actionText: "Delete Storage",
+      defaultSelection: false,
     },
     {
       icon: <MdiAccount width="4em" height="4em" />,
       actionText: "Delete Account",
+      defaultSelection: false,
     },
     {
       icon: <TablerTransfer width="4em" height="4em" />,
       actionText: "Transfer Crypto",
+      defaultSelection: false,
     },
     {
       icon: <BiRobot width="4em" height="4em" />,
       actionText: "Deploy an AI Agent",
+      defaultSelection: false,
     },
   ];
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="flex-col prose justify-center text-center">
-          <h1 className="font-extralight">Select an Action</h1>
-          <p>Choose the action you want to perform</p>
+    <>
+      <Navbar />
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <div className="flex-col prose justify-center text-center">
+            <h1
+              className="text-center text-[48px] leading-[54px] font-semibold"
+              style={{ fontFamily: "DM Serif Text" }}
+            >
+              Select an Action
+            </h1>
+            <p className="text-2xl font-thin">
+              Choose the action you want to perform
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center mt-20">
+            {actions.map((action, index) => (
+              <ActionFrame
+                key={index}
+                icon={action.icon}
+                actionText={action.actionText}
+                defaultSelection={action.defaultSelection}
+              />
+            ))}
+          </div>
+          <Link href="/action-details">
+            <button className="btn btn-secondary mt-10">Proceed</button>
+          </Link>
         </div>
-        <div className="flex flex-wrap justify-center mt-20">
-          {actions.map((action, index) => (
-            <ActionFrame
-              key={index}
-              icon={action.icon}
-              actionText={action.actionText}
-            />
-          ))}
-        </div>
-        <button className="btn btn-primary mt-10">Proceed</button>
       </div>
-    </div>
+    </>
   );
 };
 
