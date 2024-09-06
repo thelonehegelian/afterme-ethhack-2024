@@ -1,33 +1,5 @@
 import { IndexService } from "@ethsign/sp-sdk";
 
-// interface SPAttestation {
-//   id: string;
-//   mode: string;
-//   chainType: string;
-//   chainId: string;
-//   attestationId: string;
-//   transactionHash: string;
-//   indexingValue: string;
-//   schemaId: string;
-//   fullSchemaId: string;
-//   linkedAttestation: string;
-//   attester: string;
-//   from: string;
-//   attestTimestamp: string;
-//   validUntil: string;
-//   revoked: boolean;
-//   revokeTimestamp: string | null;
-//   revokeReason: string | null;
-//   revokeTransactionHash: string;
-//   data: string;
-//   dataLocation: string;
-//   extra: Record<string, unknown>;
-//   syncAt: string;
-//   lastSyncAt: string | null;
-//   recipients: any[];
-//   schema: Record<string, unknown>;
-// }
-
 async function getAttestationByID(id) {
   const indexService = new IndexService("testnet");
   const attestations = await indexService.queryAttestationList({ page: 1 });
