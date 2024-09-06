@@ -1,46 +1,77 @@
 "use client";  // Mark this as a Client Component
 
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Client } from "@xmtp/xmtp-js";
 import { ethers } from "ethers";
 import { getEnv, loadKeys, storeKeys } from "./helper";
 
-const SendMessagePage: React.FC = () => {
+// Utility to get the Web3 provider from MetaMask
+const getProvider = async () => {
+  if (typeof window !== 'undefined' && window.ethereum) {
+    try {
+      // Connect to the MetaMask EIP-1193 object. This is a standard
+      // protocol that allows Ethers access to make all read-only
+      // requests through MetaMask.
+      const provider = new ethers.BrowserProvider(window.ethereum)
+      return provider;
+    } catch (error) {
+      console.error('User denied account access', error);
+      return null;
+    }
+  } else {
+    console.error('MetaMask is not installed');
+    return null;
+  }
+};
+
+export default function SendMessagePage() {
+  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [client, setClient] = useState<Client | null>(null);
   const [address, setAddress] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const initializeClient = async () => {
+    const initProvider = async () => {
       try {
-        // Initialize Ethereum provider
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        
-        // Request permission to connect to the user's wallet
-        await provider.send("eth_requestAccounts", []);
+        // Initialize the Ethereum provider
+        const web3Provider = await getProvider();
+        if (!web3Provider) {
+          throw new Error('MetaMask provider is unavailable');
+        }
 
-        // Get the signer from the provider
-        const signer = provider.getSigner();
+        // Set the provider in the state
+        setProvider(web3Provider);
 
-        // Get the wallet address
-        const address = await signer.getAddress();
-        setAddress(address);
 
-        // Load keys or generate new ones
-        let keys = loadKeys(address);
+        // It also provides an opportunity to request access to write
+        // operations, which will be performed by the private key
+        // that MetaMask manages for the user.
+        const signer = await web3Provider.getSigner();
+
+        // Get the user's wallet address
+        const walletAddress = await signer.getAddress();
+        setAddress(walletAddress);
+
+        const clientOptions = {
+          env: "production",
+        };
+         
+        let keys = loadKeys(walletAddress);
         if (!keys) {
           keys = await Client.getKeys(signer, {
-            env: getEnv(),
+            ...clientOptions,
             skipContactPublishing: true,
             persistConversations: false,
           });
-
-          // Store keys securely
-          storeKeys(address, keys);
+          storeKeys(walletAddress, keys);
         }
+        console.log("Kluce: ", keys.toString());
+        const xmtpClient = await Client.create(null, {
+          ...clientOptions,
+          privateKeyOverride: keys,
+        });
 
-        // Create XMTP client
-        const xmtpClient = await Client.create(keys, { env: getEnv() });
+
         setClient(xmtpClient);
       } catch (err) {
         console.error("Error initializing XMTP client", err);
@@ -48,20 +79,14 @@ const SendMessagePage: React.FC = () => {
       }
     };
 
-    initializeClient();
-  }, []);
+    initProvider();
+  }, []);  // Empty dependency array to run only once on component mount
 
   return (
     <div>
-      {error ? (
-        <p>Error: {error}</p>
-      ) : client && address ? (
-        <p>Connected as: {address}</p>
-      ) : (
-        <p>Connecting...</p>
-      )}
+      <h1>Send Message Page</h1>
+      {provider ? <p>Connected to MetaMask</p> : <p>MetaMask is not installed or user denied access</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
-};
-
-export default SendMessagePage;
+}
