@@ -1,30 +1,67 @@
+"use client";  // Mark this as a Client Component
+
+import { useEffect, useState } from "react";
 import { Client } from "@xmtp/xmtp-js";
 import { ethers } from "ethers";
-import {getEnv, loadKeys, storeKeys} from "./helper";
+import { getEnv, loadKeys, storeKeys } from "./helper";
 
-const provider = new ethers.providers.Web3Provider(window.ethereum);
+const SendMessagePage: React.FC = () => {
+  const [client, setClient] = useState<Client | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-// MetaMask requires requesting permission to connect to the user's account
-await provider.send("eth_requestAccounts", []);
+  useEffect(() => {
+    const initializeClient = async () => {
+      try {
+        // Initialize Ethereum provider
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+        // Request permission to connect to the user's wallet
+        await provider.send("eth_requestAccounts", []);
 
-const signer = provider.getSigner();
+        // Get the signer from the provider
+        const signer = provider.getSigner();
 
-const clientOptions = {
-  env: getEnv(),
+        // Get the wallet address
+        const address = await signer.getAddress();
+        setAddress(address);
+
+        // Load keys or generate new ones
+        let keys = loadKeys(address);
+        if (!keys) {
+          keys = await Client.getKeys(signer, {
+            env: getEnv(),
+            skipContactPublishing: true,
+            persistConversations: false,
+          });
+
+          // Store keys securely
+          storeKeys(address, keys);
+        }
+
+        // Create XMTP client
+        const xmtpClient = await Client.create(keys, { env: getEnv() });
+        setClient(xmtpClient);
+      } catch (err) {
+        console.error("Error initializing XMTP client", err);
+        setError("Failed to initialize client");
+      }
+    };
+
+    initializeClient();
+  }, []);
+
+  return (
+    <div>
+      {error ? (
+        <p>Error: {error}</p>
+      ) : client && address ? (
+        <p>Connected as: {address}</p>
+      ) : (
+        <p>Connecting...</p>
+      )}
+    </div>
+  );
 };
 
-// Get the keys using a valid Signer. Save them somewhere secure.
-const address = await signer.getAddress();
-let keys = loadKeys(address);
-if (!keys) {
-  keys = await Client.getKeys(signer, {
-    ...clientOptions,
-    // we don't need to publish the contact here since it
-    // will happen when we create the client later
-    skipContactPublishing: true,
-    // we can skip persistence on the keystore for this short-lived
-    // instance
-    persistConversations: false,
-  });
-  storeKeys(address, keys);
-}
+export default SendMessagePage;
