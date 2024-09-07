@@ -17,6 +17,8 @@ import {
   HeartPulseIcon,
   ShieldIcon,
 } from "lucide-react";
+import axios from "axios";
+import { useState } from "react";
 
 interface Claim {
   claimantId: string;
@@ -31,6 +33,9 @@ interface ClaimCardProps {
 }
 
 export default function ClaimCard({ claim }: ClaimCardProps) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const getClaimTypeIcon = (type: Claim["claimType"]) => {
     switch (type) {
       case "health":
@@ -54,6 +59,29 @@ export default function ClaimCard({ claim }: ClaimCardProps) {
         return "bg-red-500";
       case "Open":
         return "bg-blue-500";
+    }
+  };
+
+  const handleAttestSchema = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/attest-schema",
+        {
+          // data: claim.claimantId,
+          // just gonna hardcode this for now
+          data: "SPS_fNatykLnvWr6NUOojVa7U",
+        }
+      );
+      console.log("Response:", response.data);
+      setSuccess(true);
+    } catch (error) {
+      setError("Error attesting schema");
+      console.error("Error attesting schema:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,15 +135,24 @@ export default function ClaimCard({ claim }: ClaimCardProps) {
         <Link href={`https://sign.global/`} passHref className="w-full">
           <button className="btn btn-neutral">View Claim</button>
         </Link>
-        <button
-          className={`btn ${
-            claim.paidStatus === "Paid"
-              ? "btn-active btn-ghost disabled cursor-not-allowed"
-              : "btn-active btn-secondary"
-          }`}
-        >
-          Attest Schema
-        </button>
+        {success ? (
+          <button className="btn btn-success">Attested</button>
+        ) : (
+          <button
+            className={`btn ${
+              claim.paidStatus === "Paid"
+                ? "btn-active btn-ghost disabled cursor-not-allowed"
+                : "btn-active btn-secondary"
+            }`}
+            onClick={handleAttestSchema}
+          >
+            {loading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "Attest Schema"
+            )}
+          </button>
+        )}
       </CardFooter>
     </Card>
   );
