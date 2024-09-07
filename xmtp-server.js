@@ -4,8 +4,8 @@ const { Client } = require("@xmtp/xmtp-js");
 const ethers = require("ethers");
 require("dotenv").config();
 
-function base64ToUint8Array(base64: string): Uint8Array {
-  const binaryString = atob(base64); // Decode base64 to binary string
+function base64ToUint8Array(base64) {
+  const binaryString = Buffer.from(base64, 'base64').toString('binary'); // Use Buffer to handle base64
   const len = binaryString.length;
   const bytes = new Uint8Array(len);
   for (let i = 0; i < len; i++) {
@@ -39,7 +39,8 @@ const contract = new ethers.Contract(
 );
 
 const clientOptions = { env: "dev" };
-async function initializeXMTP(xmtpKey: string | null) {
+
+async function initializeXMTP(xmtpKey) {
   if (!xmtpKey) {
     return await Client.create(ethers.Wallet.createRandom(), clientOptions);
   } else {
@@ -50,11 +51,7 @@ async function initializeXMTP(xmtpKey: string | null) {
   }
 }
 
-export async function scheduleMessage(
-  recipient: string,
-  messageContent: string,
-  xmtpKey: string | null
-) {
+async function scheduleMessage(recipient, messageContent, xmtpKey) {
   try {
     console.log(
       `Scheduled message to ${recipient}: messageContent is not logged here`
@@ -86,9 +83,9 @@ app.prepare().then(() => {
   contract.on(
     "MessageScheduled",
     async (
-      recipient: string,
-      messageContent: string,
-      xmtpKey: string | null
+      recipient,
+      messageContent,
+      xmtpKey
     ) => {
       await scheduleMessage(recipient, messageContent, xmtpKey);
     }
@@ -97,8 +94,9 @@ app.prepare().then(() => {
 
   server.post("/api/send-message", async (req, res) => {
     try {
-      const { recipient, messageContent, xmtpKey } = await req.json();
+      const { recipient, messageContent, xmtpKey } = req.body;
       await scheduleMessage(recipient, messageContent, xmtpKey);
+      res.status(200).send("Message scheduled successfully");
     } catch (error) {
       console.error(error);
       res.status(500).send("An error occurred.");
