@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"npx tsc xmtp-server.ts && node xmtp-server.js\"",
+    "dev": "concurrently \"next dev\" \"node xmtp-server.js\"",
     "build": "next build",
-    "start": "concurrently \"next start\" \"npx tsc xmtp-server.ts && node xmtp-server.js\"",
+    "start": "concurrently \"next start\" \"node xmtp-server.js\"",
     "lint": "next lint"
   },
   "dependencies": {
@@ -13,6 +13,7 @@
     "@web3auth/ethereum-provider": "^8.12.4",
     "@web3auth/modal": "^8.12.7",
     "@xmtp/xmtp-js": "^12.1.0",
+    "dotenv": "^16.4.5",
     "ethers": "^6.13.2",
     "express": "^4.19.2",
     "next": "14.2.7",
