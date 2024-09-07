@@ -5,12 +5,26 @@ import Navbar from "../components/Navbar";
 interface Claim {
   claimantId: string;
   policyTypeAndNumber: string;
-  claimType: "health" | "property" | "auto" | "life";
+  claimType: "life" | "health" | "property" | "auto" | "life";
   policyType: string;
-  paidStatus: "Paid" | "Pending" | "Denied"; // Changed from ClaimStatus to match the component usage
+  paidStatus: "Paid" | "Pending" | "Denied" | "Open"; // Changed from ClaimStatus to match the component usage
 }
 
 const claims: Claim[] = [
+  {
+    claimantId: "pqr678",
+    policyTypeAndNumber: "Health Policy 13579",
+    claimType: "health",
+    policyType: "Health Insurance",
+    paidStatus: "Open",
+  },
+  {
+    claimantId: "stu901",
+    policyTypeAndNumber: "Property Policy 24681",
+    claimType: "property",
+    policyType: "Homeowner's Insurance",
+    paidStatus: "Open",
+  },
   {
     claimantId: "abc123",
     policyTypeAndNumber: "Health Policy 12345",

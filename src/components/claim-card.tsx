@@ -21,9 +21,9 @@ import {
 interface Claim {
   claimantId: string;
   policyTypeAndNumber: string;
-  claimType: "health" | "property" | "auto" | "life";
+  claimType: "life" | "health" | "property" | "auto" | "life";
   policyType: string;
-  paidStatus: "Paid" | "Pending" | "Denied"; // Changed from ClaimStatus to match the component usage
+  paidStatus: "Paid" | "Pending" | "Denied" | "Open"; // Changed from ClaimStatus to match the component usage
 }
 
 interface ClaimCardProps {
@@ -52,6 +52,8 @@ export default function ClaimCard({ claim }: ClaimCardProps) {
         return "bg-yellow-500";
       case "Denied":
         return "bg-red-500";
+      case "Open":
+        return "bg-blue-500";
     }
   };
 
@@ -101,10 +103,19 @@ export default function ClaimCard({ claim }: ClaimCardProps) {
           </p>
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex space-x-2">
         <Link href={`https://sign.global/`} passHref className="w-full">
-          <Button className="w-full">View Claim Details</Button>
+          <button className="btn btn-neutral">View Claim</button>
         </Link>
+        <button
+          className={`btn ${
+            claim.paidStatus === "Paid"
+              ? "btn-active btn-ghost disabled cursor-not-allowed"
+              : "btn-active btn-secondary"
+          }`}
+        >
+          Attest Schema
+        </button>
       </CardFooter>
     </Card>
   );
