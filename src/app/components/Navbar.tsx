@@ -1,13 +1,13 @@
 "use client";
-import React, { useState, useEffect, use } from "react";
-import Image from "next/image";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Button } from "./ui/button";
+import { Layout } from "lucide-react";
+import Image from "next/image";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
-
-// import { DM_Serif_Text } from "next/font/google";
-// const dmSerifText = DM_Serif_Text({ weight: "400", subsets: ["latin"] });
 
 const clientId = process.env.NEXT_PUBLIC_CLIENT_ID || "";
 
@@ -33,13 +33,17 @@ const web3auth = new Web3Auth({
   privateKeyProvider,
 });
 
-function Navbar() {
+export default function Navbar() {
+  const [trimmedAddress, setTrimmedAddress] = useState("");
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [address, setAddress] = useState("");
+
   const getUserInfo = async () => {
     const user = await web3auth.getUserInfo();
     console.log(user);
   };
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -48,6 +52,10 @@ function Navbar() {
 
         if (web3auth.connected) {
           setLoggedIn(true);
+          const userAddress = await web3auth.provider?.request({
+            method: "eth_accounts",
+          });
+          setAddress(userAddress[0]);
         }
       } catch (error) {
         console.error(error);
@@ -56,6 +64,7 @@ function Navbar() {
 
     init();
   }, []);
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -64,78 +73,74 @@ function Navbar() {
         console.error(error);
       }
     };
-    fetchUserInfo();
-  }, []);
+    if (loggedIn) {
+      fetchUserInfo();
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    if (address) {
+      setTrimmedAddress(`${address.slice(0, 6)}...${address.slice(-4)}`);
+    }
+  }, [address]);
 
   const login = async () => {
-    const web3authProvider = await web3auth.connect();
-    setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
+    try {
+      const web3authProvider = await web3auth.connect();
+      setProvider(web3authProvider);
+      if (web3auth.connected && web3authProvider) {
+        setLoggedIn(true);
+        const userAddress = (await web3authProvider.request({
+          method: "eth_accounts",
+        })) as string[];
+        setAddress(userAddress[0]);
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message !== "User closed the modal") {
+        console.error(error);
+      }
     }
   };
+
   const logout = async () => {
     await web3auth.logout();
     setProvider(null);
     setLoggedIn(false);
-    // uiConsole("logged out");
+    setAddress("");
   };
+
   const [activeLink, setActiveLink] = useState<string | null>("Home");
 
   return (
-    <div className="navbar bg-base-100 w-full">
-      <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl m-0 p-0">
-          <Image
-            src="/logo-nav.svg"
-            alt="afterMe Logo"
-            width={100}
-            height={100}
-          />
-        </a>
+    <nav className="flex items-center justify-between p-4 bg-background">
+      <Link href="/" className="flex items-center space-x-2">
+        <Layout className="h-6 w-6" />
+        <Image
+          src="/logo-nav.svg"
+          alt="afterMe Logo"
+          width={100}
+          height={100}
+        />
+      </Link>
+
+      <div className="hidden md:flex space-x-4">
+        <Button variant="ghost" asChild>
+          <Link href="/">Home</Link>
+        </Button>
+        <Button variant="ghost" asChild>
+          <Link href="/dashboard">Dashboard</Link>
+        </Button>
+        <Button variant="ghost" asChild>
+          <Link href="/about">About</Link>
+        </Button>
       </div>
-      <div className="flex-none flex justify-center w-full">
-        <ul className="menu menu-horizontal p-0">
-          <li>
-            <Link
-              href="/"
-              className={`m-2 ${
-                activeLink === "Home" ? "btn btn-primary" : ""
-              }`}
-              onClick={() => setActiveLink("Home")}
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <a
-              className={`m-2 ${
-                activeLink === "Dashboard" ? "btn btn-primary" : ""
-              }`}
-              onClick={() => setActiveLink("Dashboard")}
-            >
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a
-              className={`m-2 ${
-                activeLink === "About" ? "btn btn-primary" : ""
-              }`}
-              onClick={() => setActiveLink("About")}
-            >
-              About
-            </a>
-          </li>
-        </ul>
-        <div className="flex-none ml-auto">
-          <button className="btn btn-neutral m-2" onClick={login}>
-            {loggedIn ? "Connected" : "Connect"}
-          </button>
-        </div>
-      </div>
-    </div>
+
+      <Button
+        onClick={loggedIn ? logout : login}
+        variant={loggedIn ? "outline" : "default"}
+      >
+        {loggedIn ? trimmedAddress : "Connect"}
+      </Button>
+    </nav>
   );
 }
-
-export default Navbar;
