@@ -1,58 +1,54 @@
-"use client"
+import { useEffect, useState } from "react";
 import {
   SignProtocolClient,
   SpMode,
   EvmChains,
 } from "@ethsign/sp-sdk";
-import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import { privateKeyToAccount } from "viem/accounts";
 
-export default function MetaMaskIntegration() {
-  const [client, setClient] = useState(null);
+const SignProtocolComponent = () => {
+  const [schemaResponse, setSchemaResponse] = useState(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
-      // MetaMask is installed and we're in the browser
-      const connectMetaMask = async () => {
-        try {
-          const provider = new ethers.providers.Web3Provider(window.ethereum);
-          await provider.send("eth_requestAccounts", []);
-
-          const signer = provider.getSigner();
-          const account = await signer.getAddress();
-
-          // Initialize SignProtocolClient with MetaMask account
-          const clientInstance = new SignProtocolClient(SpMode.OnChain, {
-            chain: EvmChains.polygonMumbai,
-            account: account, // Pass MetaMask account address here
-          });
-          setClient(clientInstance);
-
-          // Create schema
-          const createSchemaRes = await clientInstance.createSchema({
-            name: "after me app",
-            data: [{ name: "name", type: "string" }],
-          });
-          console.log("Schema created: ", createSchemaRes);
-
-          // Create attestation
-          const createAttestationRes = await clientInstance.createAttestation({
-            schemaId: createSchemaRes.schemaId,
-            data: { name: "a" },
-            indexingValue: "xxx",
-          });
-
-          console.log("Attestation created: ", createAttestationRes);
-        } catch (error) {
-          console.error("MetaMask connection error:", error);
+    const initializeClient = async () => {
+      try {
+        const privateKey = process.env.ANNY_PRIVATE_KEY;
+        if (!privateKey) {
+          console.error("Private key is not set in environment variables");
+          return;
         }
-      };
 
-      connectMetaMask();
-    } else {
-      console.log('MetaMask is not installed or not in a browser environment!');
-    }
+        const client = new SignProtocolClient(SpMode.OnChain, {
+          chain: EvmChains.polygonMumbai,
+          account: privateKeyToAccount(privateKey),
+        });
+
+        // Create schema
+        const createSchemaRes = await client.createSchema({
+          name: "after me app",
+          data: [{ name: "name", type: "string" }],
+        });
+
+        setSchemaResponse(createSchemaRes);
+        console.log(createSchemaRes)
+      } catch (error) {
+        console.error("Error creating schema:", error);
+      }
+    };
+
+    initializeClient();
   }, []);
 
-  return <div>MetaMask Integration Component</div>;
-}
+  return (
+    <div>
+      <h1>Sign Protocol Schema</h1>
+      {schemaResponse ? (
+        <pre>{JSON.stringify(schemaResponse, null, 2)}</pre>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+};
+
+export default SignProtocolComponent;
