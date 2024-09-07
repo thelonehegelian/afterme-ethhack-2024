@@ -48,13 +48,14 @@ export default function Navbar() {
     const init = async () => {
       try {
         await web3auth.initModal();
-        setProvider(web3auth.provider);
+        const currentProvider = web3auth.provider;
+        setProvider(currentProvider);
 
-        if (web3auth.connected) {
+        if (web3auth.connected && currentProvider) {
           setLoggedIn(true);
-          const userAddress = await web3auth.provider?.request({
+          const userAddress = (await currentProvider.request({
             method: "eth_accounts",
-          });
+          })) as string[];
           setAddress(userAddress[0]);
         }
       } catch (error) {
