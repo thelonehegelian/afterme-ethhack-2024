@@ -38,9 +38,9 @@ const AttestationComponent = () => {
         const latestNonce = await publicClient.getTransactionCount(account);
         // Create the attestation
         const createAttestationRes = await client.createAttestation({
-          schemaId: "0x1a4",
+          schemaId: "0x1ae",
           data: { name: "insurance company" },
-          indexingValue: "0xF65Ad4102867D7e6De39754E5fa5858D7fB3aB64",
+          indexingValue: "0x7d9305b0BAB67157b4265a2D56816174d8e0E4c6",
         });
 
         // Set the result state

@@ -1,14 +1,16 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { IERC20 } from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
 
-// @dev This contract manages the execution of AfterMe plan. We are separating the AfterMe logic from the hook to make things easier
+// @dev This contract manages the whitelist. We are separating the whitelist logic from the hook to make things easier
 // to read.
-contract AfterMeListener is Ownable, ISPHook {
-    // white list is who can be trigger via attestation (eg insurance company)
+contract AfterMeWorker is Ownable {
     mapping(address attester => bool allowed) public whitelist;
+
+    error UnauthorizedAttester();
 
     constructor() Ownable(_msgSender()) { }
 
@@ -16,14 +18,14 @@ contract AfterMeListener is Ownable, ISPHook {
         whitelist[attester] = allowed;
     }
 
-    function _checkAttesterAndExecuteAfterMePlan(address attester) internal view {
+    function _checkAttesterAndRunAfterMe(address attester) internal view {
         // solhint-disable-next-line custom-errors
-        require(whitelist[attester], 'UnauthorizedAttester');
-
-        // ... start doing after me things
+        require(whitelist[attester], UnauthorizedAttester());
     }
+}
 
-    // Sign procotol stuff
+// @dev This contract implements the actual schema hook.
+contract AfterMeHook is ISPHook, AfterMeWorker {
     function didReceiveAttestation(
         address attester,
         uint64, // schemaId
@@ -33,7 +35,7 @@ contract AfterMeListener is Ownable, ISPHook {
         external
         payable
     {
-        _checkAttesterAndExecuteAfterMePlan(attester);
+        _checkAttesterAndRunAfterMe(attester);
     }
 
     function didReceiveAttestation(
@@ -47,7 +49,7 @@ contract AfterMeListener is Ownable, ISPHook {
         external
         view
     {
-        _checkAttesterAndExecuteAfterMePlan(attester);
+        _checkAttesterAndRunAfterMe(attester);
     }
 
     function didReceiveRevocation(
@@ -59,7 +61,7 @@ contract AfterMeListener is Ownable, ISPHook {
         external
         payable
     {
-        _checkAttesterAndExecuteAfterMePlan(attester);
+        _checkAttesterAndRunAfterMe(attester);
     }
 
     function didReceiveRevocation(
@@ -73,6 +75,6 @@ contract AfterMeListener is Ownable, ISPHook {
         external
         view
     {
-        _checkAttesterAndExecuteAfterMePlan(attester);
+        _checkAttesterAndRunAfterMe(attester);
     }
 }
