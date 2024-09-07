@@ -1,3 +1,5 @@
+"use client";  // This marks the component as a Client Component
+
 import { useEffect, useState } from "react";
 import {
   SignProtocolClient,
@@ -12,14 +14,14 @@ const SignProtocolComponent = () => {
   useEffect(() => {
     const initializeClient = async () => {
       try {
-        const privateKey = process.env.ANNY_PRIVATE_KEY;
+        const privateKey = process.env.NEXT_PUBLIC_ANNY_PRIVATE_KEY;
         if (!privateKey) {
           console.error("Private key is not set in environment variables");
           return;
         }
 
         const client = new SignProtocolClient(SpMode.OnChain, {
-          chain: EvmChains.polygonMumbai,
+          chain: EvmChains.sepolia,
           account: privateKeyToAccount(privateKey),
         });
 
