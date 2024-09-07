@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"node xmtp-server.js\"",
+    "dev": "concurrently \"next dev\" \"npx tsc xmtp-server.ts && node xmtp-server.js\"",
     "build": "next build",
-    "start": "concurrently \"next start\" \"node xmtp-server.js\"",
+    "start": "concurrently \"next start\" \"npx tsc xmtp-server.ts && node xmtp-server.js\"",
     "lint": "next lint"
   },
   "dependencies": {
@@ -30,6 +30,6 @@
     "eslint-config-next": "14.2.7",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.5.4"
   }
 }
