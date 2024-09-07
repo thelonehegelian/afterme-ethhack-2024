@@ -8,11 +8,13 @@ import { Label } from "@/components/ui/label";
 import Navbar from "@/app/components/Navbar";
 
 const logos = [
-  "/logo.png",
-  "/logo-nav.svg",
-  "/placeholder.svg?height=50&width=50",
-  "/placeholder.svg?height=50&width=50",
-  "/placeholder.svg?height=50&width=50",
+  "/ama-logo.png",
+  "/cfp-mark.jpg",
+  "/chartswap-logo.gif",
+  "/docusign.png",
+  "/equifax.png",
+  "/nsc-logo.webp",
+  "/truework-logo-vector.png",
 ];
 
 export default function LoginPage() {
@@ -38,14 +40,16 @@ export default function LoginPage() {
                 src={logo}
                 alt={`Logo ${index + 1}`}
                 className="absolute"
-                initial={{ x: -100, opacity: 0 }}
+                initial={{ x: 0, y: 0, opacity: 0 }}
                 animate={{
-                  x: ["100%", "-100%"],
-                  opacity: [0, 1, 1, 0],
+                  x: ["0%", "100%", "0%", "-100%", "0%"],
+                  y: ["0%", "0%", "100%", "0%", "-100%"],
+                  opacity: [0, 1, 1, 1, 0],
                 }}
                 transition={{
-                  x: { duration: 10, repeat: Infinity, ease: "linear" },
-                  opacity: { duration: 3, times: [0, 0.1, 0.9, 1] },
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
                   delay: index * 2,
                 }}
               />
