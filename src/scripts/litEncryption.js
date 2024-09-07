@@ -94,34 +94,85 @@ class Lit {
       console.error("Error getting session signatures:", error);
     }
   }
+
+  // Decrypt the message
+  async decrypt(ciphertext, dataToEncryptHash) {
+    // Get the session signatures
+    const sessionSigs = await this.getSessionSignatures();
+
+    // Decrypt the message
+    const decryptedString = await LitJsSdk.decryptToString(
+      {
+        accessControlConditions,
+        chain: this.chain,
+        ciphertext,
+        dataToEncryptHash,
+        sessionSigs,
+      },
+      this.litNodeClient
+    );
+
+    // Return the decrypted string
+    return { decryptedString };
+  }
 }
 
-// Example usage
-(async () => {
-  const chain = "sepolia";
-  const contractAddress = "0xYourContractAddress";
-  const expirationTime = Date.now() + 3600 * 1000; // 1 hour from now
-
-  const myLit = new Lit(chain);
-  await myLit.connect();
-
-  // JSON data to encrypt
-  const jsonData = {
-    message: "Hello, World!",
-    timestamp: Date.now(),
-  };
-
-  // Encrypt JSON
+export async function encryptMessage(myLit, jsonData) {
   try {
     const result = await myLit.encryptMessage(JSON.stringify(jsonData));
 
     if (result) {
       const { encryptedData, encryptedSymmetricKey } = result;
       console.log("Encrypted Data:", encryptedData);
+      return result;
     } else {
       console.error("Encryption failed.");
+      return null;
     }
   } catch (error) {
-    console.error("Error in example usage:", error);
+    console.error("Error in encryptMessage function:", error);
+    return null;
   }
-})();
+}
+
+export async function decryptMessage(myLit, ciphertext, dataToEncryptHash) {
+  try {
+    const result = await myLit.decrypt(ciphertext, dataToEncryptHash);
+
+    if (result) {
+      const { decryptedString } = result;
+      console.log("Decrypted String:", decryptedString);
+      return decryptedString;
+    } else {
+      console.error("Decryption failed.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error in decryptMessage function:", error);
+    return null;
+  }
+}
+
+// Example usage
+const chain = "sepolia";
+const myLit = new Lit(chain);
+await myLit.connect();
+
+// JSON data to encrypt
+const jsonData = {
+  message: "Hello, World!",
+  timestamp: Date.now(),
+};
+
+// Encrypt JSON
+const encryptionResult = await encryptMessage(myLit, jsonData);
+
+if (encryptionResult) {
+  const { ciphertext, dataToEncryptHash } = encryptionResult;
+  // Decrypt JSON
+  const decryptedMessage = await decryptMessage(
+    myLit,
+    ciphertext,
+    dataToEncryptHash
+  );
+}

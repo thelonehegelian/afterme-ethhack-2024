@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
+import { decryptMessage } from "../../../scripts/litEncryption";
 
 export async function POST(req: NextApiRequest) {
   try {
@@ -17,9 +18,19 @@ export async function POST(req: NextApiRequest) {
       );
     }
 
+    // NOTE: Message is decrypted here.
+    // *Encryption works
+    // There is an error which I am not able to resolve yet.
+    // Sending the response without decrypting the message because the Smart Contract needs it
+    // try {
+    //   decryptMessage(ciphertext, encryptedDataHash);
+    // } catch (error) {
+    //   console.error("Error decrypting message:", error);
+    // }
+
     const responseData = {
       content:
-        "Friends, Romans, countrymen, the news of my death is not exagerated.",
+        "Friends, Romans, Countrymen, the news of my death is not exagerated.",
       timestamp: "2023-08-07T05:31:12.156888Z",
       bluesky: {
         identifier: "peterhorvath.bsky.social",
