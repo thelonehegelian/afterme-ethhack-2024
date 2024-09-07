@@ -12,7 +12,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Call the function to schedule a message
     await scheduleMessage(recipient, messageContent, xmtpKey || null);
 
     return NextResponse.json(

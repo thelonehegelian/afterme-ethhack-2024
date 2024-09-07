@@ -1,5 +1,4 @@
-"use client";  // Mark this as a Client Component
-
+"use client";
 import { SetStateAction, useEffect, useState } from "react";
 import { Client } from "@xmtp/xmtp-js";
 import { ethers } from "ethers";
@@ -24,6 +23,14 @@ const getProvider = async () => {
   }
 };
 
+function uint8ArrayToBase64(uint8Array: Uint8Array): string {
+  let binaryString = '';
+  for (let i = 0; i < uint8Array.length; i++) {
+      binaryString += String.fromCharCode(uint8Array[i]);
+  }
+  return btoa(binaryString); // Encode the binary string to base64
+}
+
 export default function SendMessagePage() {
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [client, setClient] = useState<Client | null>(null);
@@ -33,44 +40,37 @@ export default function SendMessagePage() {
   useEffect(() => {
     const initProvider = async () => {
       try {
-        // Initialize the Ethereum provider
         const web3Provider = await getProvider();
         if (!web3Provider) {
           throw new Error('MetaMask provider is unavailable');
         }
 
-        // Set the provider in the state
         setProvider(web3Provider);
-
-
-        // It also provides an opportunity to request access to write
-        // operations, which will be performed by the private key
-        // that MetaMask manages for the user.
         const signer = await web3Provider.getSigner();
-
-        // Get the user's wallet address
         const walletAddress = await signer.getAddress();
         setAddress(walletAddress);
 
         const clientOptions = {
-          env: "production",
+          env: "dev",
         };
          
-        let keys = loadKeys(walletAddress);
-        if (!keys) {
-          keys = await Client.getKeys(signer, {
+        let keysString = loadKeys(walletAddress);
+        if (!keysString) {
+          const keys = await Client.getKeys(signer, {
             ...clientOptions,
             skipContactPublishing: true,
             persistConversations: false,
           });
-          storeKeys(walletAddress, keys);
+          keysString = uint8ArrayToBase64(keys);
+          console.log("Kluce: ", );
+          console.log(keysString);
+          storeKeys(walletAddress, keysString);
         }
-        console.log("Kluce: ", keys.toString());
+        
         const xmtpClient = await Client.create(null, {
           ...clientOptions,
-          privateKeyOverride: keys,
+          privateKeyOverride: Uint8Array.from(Buffer.from(keysString, "utf-8")),
         });
-
 
         setClient(xmtpClient);
       } catch (err) {

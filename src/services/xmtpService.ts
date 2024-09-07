@@ -3,40 +3,16 @@ import { InfuraProvider } from "ethers/providers";
 import { Wallet, HDNodeWallet } from "ethers/wallet";
 import { Contract } from "ethers/contract";
 
-async function initialize_the_wallet_from_key(xmtpKey: string) {
-  const wallet = new Wallet(xmtpKey);
-  console.log(`Wallet address: ${wallet.address}`);
-  return wallet;
-}
-
-async function initialize_the_random_wallet() {
-  const wallet = Wallet.createRandom();
-  console.log(
-    `Wallet address: ${wallet.address} , private key: ${wallet.privateKey}`
-  );
-  return wallet;
-}
-
-async function create_a_client(wallet: Wallet | HDNodeWallet) {
-  if (!wallet) {
-    console.log("Wallet is not initialized");
-    return;
+function base64ToUint8Array(base64: string): Uint8Array {
+  const binaryString = atob(base64); // Decode base64 to binary string
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i); // Convert each char to its byte
   }
-
-  const xmtpClient = await Client.create(wallet, { env: "production" });
-  console.log("Client created: ", xmtpClient.address);
-  return xmtpClient;
+  return bytes;
 }
 
-async function initializeXMTP(xmtpKey: string | null) {
-  let wallet: Wallet | HDNodeWallet | null;
-  if (xmtpKey == null) {
-    wallet = await initialize_the_random_wallet();
-  } else {
-    wallet = await initialize_the_wallet_from_key(xmtpKey);
-  }
-  return await create_a_client(wallet);
-}
 
 const envVars = process.env;
 if (!envVars.INFURA_API_KEY || !envVars.EMITER_CONTRACT_ADDRESS) {
@@ -44,32 +20,46 @@ if (!envVars.INFURA_API_KEY || !envVars.EMITER_CONTRACT_ADDRESS) {
     "Missing required environment variables: INFURA_API_KEY, EMITER_CONTRACT_ADDRESS"
   );
 }
+
 const infuraApiKey = envVars.INFURA_API_KEY;
 const emiterContractAddress = envVars.EMITER_CONTRACT_ADDRESS;
-
 const provider = new InfuraProvider("sepolia", infuraApiKey);
+
 const contractAbi = [
   "event MessageScheduled(address indexed recipient, string messageContent)",
 ];
 
 const contract = new Contract(emiterContractAddress, contractAbi, provider);
 
+const clientOptions = {
+  env: "dev",
+};
+
+async function initializeXMTP(xmtpKey: string) {
+  /*
+  return xmtpClient = await Client.create(null, {
+    ...clientOptions,
+    privateKeyOverride: base64ToUint8Array(xmtpKey),
+  });
+  */
+  return await Client.create(Wallet.createRandom(), { env: "dev" });
+}
+
+
 export async function scheduleMessage(
   recipient: string,
   messageContent: string,
-  xmtpKey: string | null
+  xmtpKey: string
 ) {
   try {
     console.log(
       `Scheduled message to ${recipient}: messageContent is not logged here`
     );
-    /*
     const xmtpClient = await initializeXMTP(xmtpKey);
     const conversation = await xmtpClient.conversations.newConversation(
       recipient
     );
     await conversation.send(messageContent);
-    */
   } catch (e) {
     console.error("Error scheduling message:", e);
   }
