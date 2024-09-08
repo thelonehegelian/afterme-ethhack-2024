@@ -50,8 +50,3 @@ export async function POST(req: NextApiRequest) {
     });
   }
 }
-
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.setHeader("Allow", ["POST"]);
-  return res.status(405).end(`Method ${req.method} Not Allowed`);
-}
