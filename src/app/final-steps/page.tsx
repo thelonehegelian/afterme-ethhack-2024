@@ -15,6 +15,15 @@ const FinalStepsPage: React.FC = () => {
   const [finalPostValue] = useAtom(finalPostAtom);
   const [attestationAddress] = useAtom(attestationAddressAtom);
   const [nextToKinAddress] = useAtom(nextToKinAddressAtom);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleConfirmClick = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setTimeout(() => {
+      window.location.href = "/confirmation";
+    }, 2000);
+  };
 
   return (
     <>
@@ -57,14 +66,24 @@ const FinalStepsPage: React.FC = () => {
           <div className="flex flex-col w-1/2 h-full items-center justify-center">
             <Container title="Confirmation">
               <p className="text-[#FFA400] font-semibold mb-4 ml-2">
-                Confirm and Execute
+                Sign Contracts and Attestations
               </p>
               <p className="font-extralight text-sm mb-4 ml-2">
                 Once you confirm, the plan will be executed as per your
                 settings.
               </p>
-              <Link href="/confirmation">
-                <button className="btn btn-secondary">Confirm</button>
+              <Link href="/confirmation" passHref>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleConfirmClick}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    "Sign"
+                  )}
+                </button>
               </Link>
             </Container>
           </div>
