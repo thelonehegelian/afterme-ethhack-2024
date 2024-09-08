@@ -1,10 +1,9 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import { SignProtocolClient, SpMode, OffChainSignType } from "@ethsign/sp-sdk";
 import { Wallet } from "ethers";
 import { privateKeyToAccount } from "viem/accounts";
-import { NextResponse } from "next/server";
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     console.log("Request body:", body);
@@ -12,7 +11,7 @@ export async function POST(req: NextApiRequest) {
     const { data } = body;
 
     if (!data) {
-      return new Response(JSON.stringify({ error: "Data is required" }), {
+      return new NextResponse(JSON.stringify({ error: "Data is required" }), {
         status: 400,
       });
     }
@@ -33,11 +32,16 @@ export async function POST(req: NextApiRequest) {
 
     console.log("Attestation created:", attestationInfo);
 
-    return new Response(JSON.stringify({ attestationInfo }), { status: 200 });
+    return new NextResponse(JSON.stringify({ attestationInfo }), {
+      status: 200,
+    });
   } catch (error) {
     console.error("Error creating attestation:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-      status: 500,
-    });
+    return new NextResponse(
+      JSON.stringify({ error: "Internal Server Error" }),
+      {
+        status: 500,
+      }
+    );
   }
 }
