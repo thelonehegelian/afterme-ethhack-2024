@@ -15,7 +15,7 @@ const client = new SignProtocolClient(SpMode.OffChain, {
   account: privateKeyToAccount(userPrivateKey), // Optional
 });
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: Request) {
   try {
     const schemaInfo = await client.createSchema({
       name: "test_after",
