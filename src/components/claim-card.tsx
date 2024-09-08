@@ -72,7 +72,8 @@ export default function ClaimCard({ claim }: ClaimCardProps) {
         {
           // data: claim.claimantId,
           // just gonna hardcode this for now
-          data: "SPS_fNatykLnvWr6NUOojVa7U",
+          // https://scan.sign.global/schema/SPS_PyndP9OQdcGsYqTzYoXHv
+          data: "SPS_PyndP9OQdcGsYqTzYoXHv",
         }
       );
       console.log("Response:", response.data);

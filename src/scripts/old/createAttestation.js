@@ -15,9 +15,28 @@ const client = new SignProtocolClient(SpMode.OffChain, {
 });
 // Create attestation
 const attestationInfo = await client.createAttestation({
-  schemaId: "SPS_fNatykLnvWr6NUOojVa7U", // `schemaInfo.schemaId` or other `schemaId`
-  data: { name: "a" },
-  indexingValue: "xxx",
+  schemaId: "SPS_PyndP9OQdcGsYqTzYoXHv", // `schemaInfo.schemaId` or other `schemaId`
+  data: {
+    policyHolderName: "Alice",
+    policyHolderID: "123456",
+    dateOfBirth: "1990-01-01",
+    policyNumber: "123456789",
+    policyType: "term life",
+    policyStartDate: "2022-01-01",
+    policyEndDate: "2023-01-01",
+    beneficiaryName: "Bob",
+    beneficiaryID: "654321",
+    coverageAmount: 100000,
+    premiumAmount: 1000,
+    paymentFrequency: "monthly",
+    claimID: "null",
+    claimDate: "null",
+    claimStatus: "null",
+    attestationDate: "2022-01-01",
+    verifiedBy: "Charlie",
+  },
+  indexingValue: "1",
+  recipients: ["0xcE285c85FC474C3e1A06e62260782766e6DBBd0D"],
 });
 
 console.log("Attestation created:", attestationInfo);

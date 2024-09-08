@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Navbar from "@/app/components/Navbar";
-
+import Link from "next/link";
 const logos = [
   "/ama-logo.png",
   "/cfp-mark.jpg",
@@ -17,9 +17,12 @@ const logos = [
   "/truework-logo-vector.png",
 ];
 
+// TODO add Web3Auth
+// TODO if Web3Auth connected redirect to /afterme-registry
+
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("insurance@afterme.com");
+  const [password, setPassword] = useState("password");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,9 +95,11 @@ export default function LoginPage() {
                   />
                 </div>
               </div>
-              <Button type="submit" className="w-full">
-                Sign in
-              </Button>
+              <Link href="/afterme-registry" passHref>
+                <Button type="submit" className="w-full">
+                  Sign in
+                </Button>
+              </Link>
             </form>
           </div>
         </div>
