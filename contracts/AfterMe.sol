@@ -72,21 +72,6 @@ contract AfterMe is ChainlinkClient, ConfirmedOwner {
     //     return string(abi.encodePacked("encrypted:", uint2str(_data)));
     // }
 
-    /// INTERNAL FUNCTION TO SEND ENCRYPTED DATA TO LIT PROTOCOL
-    function sendEncryptedData(string memory encryptedData) internal returns (bytes32 requestId) {
-        Chainlink.Request memory req = _buildChainlinkRequest(
-            jobId,
-            address(this),
-            this.fulfillEncryptedDataPost.selector
-        );
-
-        string memory url = "https://hook.eu2.make.com/3pa9tfjwadg0bp8v2gi2iw78wsnc5dge";
-        req._add("post", url);
-        req._add("body", encryptedData);
-
-        return _sendChainlinkRequest(req, fee);
-    }
-
     // Fulfill POST request with encrypted data
     
 
