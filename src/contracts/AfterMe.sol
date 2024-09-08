@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity ^0.8.26;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
@@ -148,11 +148,6 @@ contract AfterMe is ChainlinkClient, ConfirmedOwner {
     }
 }
 
-interface IERC20 {
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
-}
-
-
 import {FunctionsClient} from "@chainlink/contracts/src/v0.8/functions/dev/v1_0_0/FunctionsClient.sol";
 import {ConfirmedOwner} from "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
 import {FunctionsRequest} from "@chainlink/contracts/src/v0.8/functions/dev/v1_0_0/libraries/FunctionsRequest.sol";
@@ -256,5 +251,90 @@ contract AfterMeApi is FunctionsClient, ConfirmedOwner {
         }
 
         return requestId;
+    }
+}
+
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { IERC20 } from "@openzeppelin/contracts/interfaces/IERC20.sol";
+import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
+
+// @dev This contract manages the whitelist. We are separating the whitelist logic from the hook to make things easier
+// to read.
+contract AfterMeListener is Ownable, ISPHook {
+    AfterMe public afterMe;
+    event AfterMeHookEvent(address attester);
+    error UnauthorizedAttester();
+
+    mapping(address attester => bool allowed) public whitelist;
+
+    constructor(address _afterMeAddr) Ownable(_msgSender()) {
+        afterMe = AfterMe(_afterMeAddr);
+    }
+
+    function setWhitelist(address attester, bool allowed) external onlyOwner {
+        whitelist[attester] = allowed;
+    }
+
+    function _checkAttesterAndRunAfterMe(address attester) internal view {
+        // solhint-disable-next-line custom-errors
+        require(whitelist[attester], UnauthorizedAttester());
+    }
+
+    function _checkAttesterAndRunAfterMePublic(address attester) internal  {
+        // solhint-disable-next-line custom-errors
+        require(whitelist[attester], UnauthorizedAttester());
+        afterMe.requestTablelandData();
+    }
+
+    function didReceiveAttestation(
+        address attester,
+        uint64, // schemaId
+        uint64, // attestationId
+        bytes calldata // extraData
+    )
+    external
+    payable
+    {
+        _checkAttesterAndRunAfterMePublic(attester);
+    }
+
+    function didReceiveAttestation(
+        address attester,
+        uint64, // schemaId
+        uint64, // attestationId
+        IERC20, // resolverFeeERC20Token
+        uint256, // resolverFeeERC20Amount
+        bytes calldata // extraData
+    )
+    external
+    view
+    {
+        _checkAttesterAndRunAfterMe(attester);
+    }
+
+    function didReceiveRevocation(
+        address attester,
+        uint64, // schemaId
+        uint64, // attestationId
+        bytes calldata // extraData
+    )
+    external
+    payable
+    {
+        _checkAttesterAndRunAfterMe(attester);
+    }
+
+    function didReceiveRevocation(
+        address attester,
+        uint64, // schemaId
+        uint64, // attestationId
+        IERC20, // resolverFeeERC20Token
+        uint256, // resolverFeeERC20Amount
+        bytes calldata // extraData
+    )
+    external
+    view
+    {
+        _checkAttesterAndRunAfterMe(attester);
     }
 }
