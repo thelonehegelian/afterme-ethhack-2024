@@ -76,19 +76,19 @@ contract AfterMeApi is FunctionsClient, ConfirmedOwner {
 
         string[] memory args = new string[](2);
         args[0] = "https://hook.eu2.make.com/3pa9tfjwadg0bp8v2gi2iw78wsnc5dge";
-        args[1] = '{"content": "I am far too successful to be embarrassed by this incident", "timestamp": "2023-08-07T05:31:12.156888Z", "bluesky.identifier": "peterhorvath.bsky.social", "bluesky.password": "ekz5-oqxb-xg4q-6q73", "mastodon.client_id": "cFxDuou4jnIpSVUVKyFoDr0v_JUE5HBTSvVRqDddabU", "mastodon.client_secret": "Vkh-z9veEorvWIxTmGjssfTPvAkXHbHsJdVoQv33nwE", "mastodon.redirect_uri": "urn:ietf:wg:oauth:2.0:oob", "mastodon.access_token": "SDpKjmq0Sj1PafJtD94IfLHGqOuyb5-Y5yXrDUNnphE"}';
+        args[1] = '{"content": "0xawaz test!", "timestamp": "2023-08-07T05:31:12.156888Z", "bluesky.identifier": "peterhorvath.bsky.social", "bluesky.password": "ekz5-oqxb-xg4q-6q73", "mastodon.client_id": "cFxDuou4jnIpSVUVKyFoDr0v_JUE5HBTSvVRqDddabU", "mastodon.client_secret": "Vkh-z9veEorvWIxTmGjssfTPvAkXHbHsJdVoQv33nwE", "mastodon.redirect_uri": "urn:ietf:wg:oauth:2.0:oob", "mastodon.access_token": "SDpKjmq0Sj1PafJtD94IfLHGqOuyb5-Y5yXrDUNnphE"}';
 
         bytes32 requestId;
         try this.sendRequest(
-            source,
-            new bytes(0),
-            0,
-            0,
-            args,
-            new bytes[](0),
-            12345, // Replace with your actual subscription ID
-            500000,
-            bytes32(0)
+        source,
+        new bytes(0),  
+        0,
+        0,
+        args,
+        new bytes[](0),
+        3465,  // created a subscription in https://functions.chain.link/
+        300000,  // Recommended gas limit
+        0x66756e2d657468657265756d2d7365706f6c69612d3100000000000000000000  // DON ID for Ethereum Sepolia
         ) returns (bytes32 _requestId) {
             requestId = _requestId;
         } catch Error(string memory errorMessage) {
