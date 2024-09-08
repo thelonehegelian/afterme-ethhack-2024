@@ -6,13 +6,13 @@ import { CarbonNetwork4 } from "../icons";
 import Link from "next/link";
 import { useAtom } from "jotai";
 import {
-  finalPost,
+  finalPostAtom,
   attestationAddressAtom,
   nextToKinAddressAtom,
 } from "../store";
 
 const FinalStepsPage: React.FC = () => {
-  const [finalPostValue] = useAtom(finalPost);
+  const [finalPostValue] = useAtom(finalPostAtom);
   const [attestationAddress] = useAtom(attestationAddressAtom);
   const [nextToKinAddress] = useAtom(nextToKinAddressAtom);
 

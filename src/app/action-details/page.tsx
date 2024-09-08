@@ -6,7 +6,7 @@ import Container from "../components/BoxContainer";
 import { CarbonNetwork4 } from "../icons";
 import Link from "next/link";
 import { IcBaselineSnapchat, MdiGoogle } from "../icons";
-import { finalPost } from "../store"; // Import the atom
+import { finalPostAtom } from "../store"; // Import the atom
 
 const ActionDetailsPage: React.FC = () => {
   const detailedActions = [
@@ -15,7 +15,7 @@ const ActionDetailsPage: React.FC = () => {
     "Profile Conversion",
   ];
 
-  const [textareaValue, setTextareaValue] = useAtom(finalPost);
+  const [textareaValue, setTextareaValue] = useAtom(finalPostAtom);
 
   return (
     <>
