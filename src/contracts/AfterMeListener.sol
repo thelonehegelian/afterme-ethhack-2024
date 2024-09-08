@@ -7,10 +7,11 @@ import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
 
 // @dev This contract manages the whitelist. We are separating the whitelist logic from the hook to make things easier
 // to read.
-contract AfterMeWorker is Ownable {
-    mapping(address attester => bool allowed) public whitelist;
-
+contract AfterMeListener is Ownable, ISPHook {
+    event AfterMeHookEvent(address attester);
     error UnauthorizedAttester();
+
+    mapping(address attester => bool allowed) public whitelist;
 
     constructor() Ownable(_msgSender()) { }
 
@@ -22,18 +23,15 @@ contract AfterMeWorker is Ownable {
         // solhint-disable-next-line custom-errors
         require(whitelist[attester], UnauthorizedAttester());
     }
-}
 
-// @dev This contract implements the actual schema hook.
-contract AfterMeHook is ISPHook, AfterMeWorker {
     function didReceiveAttestation(
         address attester,
         uint64, // schemaId
         uint64, // attestationId
         bytes calldata // extraData
     )
-        external
-        payable
+    external
+    payable
     {
         _checkAttesterAndRunAfterMe(attester);
     }
@@ -46,8 +44,8 @@ contract AfterMeHook is ISPHook, AfterMeWorker {
         uint256, // resolverFeeERC20Amount
         bytes calldata // extraData
     )
-        external
-        view
+    external
+    view
     {
         _checkAttesterAndRunAfterMe(attester);
     }
@@ -58,8 +56,8 @@ contract AfterMeHook is ISPHook, AfterMeWorker {
         uint64, // attestationId
         bytes calldata // extraData
     )
-        external
-        payable
+    external
+    payable
     {
         _checkAttesterAndRunAfterMe(attester);
     }
@@ -72,8 +70,8 @@ contract AfterMeHook is ISPHook, AfterMeWorker {
         uint256, // resolverFeeERC20Amount
         bytes calldata // extraData
     )
-        external
-        view
+    external
+    view
     {
         _checkAttesterAndRunAfterMe(attester);
     }
