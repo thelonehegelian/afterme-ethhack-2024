@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
-import { decryptMessage } from "../../../scripts/litEncryption";
+// import { decryptMessage } from "../../../scripts/old/litEncryption";
 
 export async function POST(req: NextApiRequest) {
   try {
