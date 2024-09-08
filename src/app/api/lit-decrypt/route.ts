@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 // import { decryptMessage } from "../../../scripts/old/litEncryption";
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { ciphertext, encryptedDataHash } = body;
@@ -53,9 +53,4 @@ export async function POST(req: NextApiRequest) {
       status: 500,
     });
   }
-}
-
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.setHeader("Allow", ["POST"]);
-  return res.status(405).end(`Method ${req.method} Not Allowed`);
 }
