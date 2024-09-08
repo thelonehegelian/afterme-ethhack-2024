@@ -6,7 +6,8 @@
     "dev": "concurrently \"next dev\" \"node xmtp-server.js\"",
     "build": "next build",
     "start": "concurrently \"next start\" \"node xmtp-server.js\"",
-    "lint": "next lint"
+    "lint": "next lint",
+    "start:dev": "next dev" 
   },
   "type": "module",
   "dependencies": {
