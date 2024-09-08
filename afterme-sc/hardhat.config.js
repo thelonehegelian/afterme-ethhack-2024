@@ -19,7 +19,6 @@ module.exports = {
   },
   ignore: [
     "contracts/LitAccess.sol",
-    "contracts/AfterMeApi.sol"
   ],
   // networks: {
   //   yellowstone: {
