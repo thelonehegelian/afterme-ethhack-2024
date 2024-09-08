@@ -10,6 +10,9 @@ const FinalPage = () => {
         <p className="mb-2">
           Your AfterMe Contract and Attestation was created
         </p>
+        <p>
+          When the time comes your Digital ID will be managed as you prepared
+        </p>
         <p className="mb-4">Please go to the Dashboard</p>
         <Link href="/dashboard">
           <button className="btn btn-primary">Go to Dashboard</button>
