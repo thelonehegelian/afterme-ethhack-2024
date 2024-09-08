@@ -70,6 +70,11 @@ function AfterMeRegistry() {
         <h1 className="text-4xl font-bold mb-8 text-center">
           AfterMe Insurance
         </h1>
+
+        <button className="btn btn-primary mb-4">
+          Create New Policy Schema
+        </button>
+
         <div className="flex flex-row flex-wrap gap-4 justify-center">
           {claims.map((claim, index) => (
             <ClaimCard key={index} claim={claim} />
