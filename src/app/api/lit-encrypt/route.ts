@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Lit, encryptMessage } from "../../../scripts/litEncryption";
+import { Lit } from "../../../scripts/litEncryption";
 
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -13,15 +13,23 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     const myLit = new Lit(chain);
     await myLit.connect();
 
-    const encryptionResult = await encryptMessage(myLit, jsonData);
+    try {
+      const result = await myLit.encryptMessage(JSON.stringify(jsonData));
 
-    if (encryptionResult) {
-      return res.status(200).json(encryptionResult);
-    } else {
+      if (result) {
+        const { ciphertext, dataToEncryptHash } = result;
+        console.log("Encrypted Data:", ciphertext);
+        return res.status(200).json({ ciphertext, dataToEncryptHash });
+      } else {
+        console.error("Encryption failed.");
+        return res.status(500).json({ error: "Encryption failed" });
+      }
+    } catch (error) {
+      console.error("Error in example usage:", error);
       return res.status(500).json({ error: "Encryption failed" });
     }
   } catch (error) {
-    console.error("Error in encryption route:", error);
+    console.error("Error in POST handler:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }

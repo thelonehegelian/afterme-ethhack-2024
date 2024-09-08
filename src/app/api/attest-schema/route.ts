@@ -1,10 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {
-  SignProtocolClient,
-  SpMode,
-  EvmChains,
-  OffChainSignType,
-} from "@ethsign/sp-sdk";
+import { SignProtocolClient, SpMode, OffChainSignType } from "@ethsign/sp-sdk";
 import { Wallet } from "ethers";
 import { privateKeyToAccount } from "viem/accounts";
 import { NextResponse } from "next/server";
@@ -45,9 +40,4 @@ export async function POST(req: NextApiRequest) {
       status: 500,
     });
   }
-}
-
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.setHeader("Allow", ["POST"]);
-  return res.status(405).end(`Method ${req.method} Not Allowed`);
 }

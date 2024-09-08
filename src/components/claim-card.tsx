@@ -62,15 +62,12 @@ export default function ClaimCard({ claim }: ClaimCardProps) {
     setError(null);
     setSuccess(null);
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/attest-schema",
-        {
-          // data: claim.claimantId,
-          // just gonna hardcode this for now
-          // https://scan.sign.global/schema/SPS_PyndP9OQdcGsYqTzYoXHv
-          data: "SPS_PyndP9OQdcGsYqTzYoXHv",
-        }
-      );
+      const response = await axios.post("/api/attest-schema", {
+        // data: claim.claimantId,
+        // just gonna hardcode this for now
+        // https://scan.sign.global/schema/SPS_PyndP9OQdcGsYqTzYoXHv
+        data: "SPS_PyndP9OQdcGsYqTzYoXHv",
+      });
       console.log("Response:", response.data);
       setSuccess(true);
     } catch (error) {

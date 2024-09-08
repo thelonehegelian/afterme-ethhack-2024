@@ -8,7 +8,7 @@ import {
 } from "@lit-protocol/auth-helpers";
 
 // Define the Lit class
-class Lit {
+export class Lit {
   constructor(chain) {
     this.chain = chain;
     this.litNodeClient = null;
