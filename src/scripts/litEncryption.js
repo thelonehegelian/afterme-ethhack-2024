@@ -58,7 +58,11 @@ class Lit {
   // Get Session Signatures for decryption
   async getSessionSignatures() {
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      if (process.env.NODE_ENV !== "production") {
+        const provider = new ethers.providers.Web3Provider(
+          process.env.RPC_ENDPOINT
+        );
+      }
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
       // Could also be Smart Contract Wallet
