@@ -1,6 +1,8 @@
 
 # AfterMe & AfterMe Registry
 
+NOTE: All the code is in the `main` branch. The deployed demo is only the landing page. We are working to fix deployment issue. 
+
 Welcome to the AfterMe project! This repository contains the source code and documentation for two complementary solutions aimed at revolutionizing digital identity management and third-party attestation in the blockchain space.
 
 ## Overview
