@@ -1,1 +1,0 @@
-# AfterMe Smart Contract
