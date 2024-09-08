@@ -71,7 +71,11 @@ contract AfterMeApi is FunctionsClient, ConfirmedOwner {
         emit Response(requestId, s_lastResponse, s_lastError);
     }
 
-    function postMessage() public onlyOwner returns (bytes32) {
+    function getOwner() public view returns (address) {
+        return owner();
+    }
+
+    function postMessage() public returns (bytes32) {
         string memory source = "return await fetch(args[0], { method: 'POST', body: args[1] }).then(response => response.text());";
 
         string[] memory args = new string[](2);
@@ -81,7 +85,7 @@ contract AfterMeApi is FunctionsClient, ConfirmedOwner {
         bytes32 requestId;
         try this.sendRequest(
         source,
-        new bytes(0),  
+        new bytes(0),
         0,
         0,
         args,
