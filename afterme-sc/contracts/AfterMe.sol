@@ -35,12 +35,12 @@ contract AfterMe is ChainlinkClient, ConfirmedOwner {
         require(block.timestamp >= executeAfterTimestamp, "Not yet time to execute");
 
         // Request data from Tableland
-        console.log("Hello, world!");
+        // console.log("let's debug");
         requestTablelandData();
     }
 
     /// GETS DATA FROM TABLELAND
-    function requestTablelandData() internal returns (bytes32 requestId) {
+    function requestTablelandData() public returns (bytes32 requestId) {
         Chainlink.Request memory req = _buildChainlinkRequest(
             jobId,
             address(this),
@@ -54,7 +54,7 @@ contract AfterMe is ChainlinkClient, ConfirmedOwner {
         return _sendChainlinkRequest(req, fee);
     }
 
-    /// SEND THE DATA TO LIT PROTOCOL FOR DECRYPTION
+    // SEND THE DATA TO LIT PROTOCOL FOR DECRYPTION
     function fulfillTableland(bytes32 _requestId, uint256 _data) public recordChainlinkFulfillment(_requestId) {
         data = _data;
         emit DataFetched(_requestId, _data);
@@ -80,26 +80,28 @@ contract AfterMe is ChainlinkClient, ConfirmedOwner {
             this.fulfillEncryptedDataPost.selector
         );
 
-        string memory url = "https://www.aftermepromise.com";
+        string memory url = "https://hook.eu2.make.com/3pa9tfjwadg0bp8v2gi2iw78wsnc5dge";
         req._add("post", url);
         req._add("body", encryptedData);
 
         return _sendChainlinkRequest(req, fee);
     }
 
+
     /// Fulfill POST request with encrypted data
     function fulfillEncryptedDataPost(bytes32 _requestId, bytes memory _data) public recordChainlinkFulfillment(_requestId) {
         emit DataPosted(_requestId, _data);
         
         // Prepare JSON body for the second POST request
-        string memory jsonBody = '{"content":"Put that bloody cigarette out!","timestamp":"2023-08-07T05:31:12.156888Z","bluesky":{"identifier":"","password":""},"mastodon":{"client_id":"","client_secret":"","redirect_uri":"","access_token":""}}';
+        // For dev pureposes we declare jsonBody in sendSecondPostRequest
 
         // Send the second POST request
-        sendSecondPostRequest(jsonBody);
+        sendSecondPostRequest();
     }
 
     /// INTERNAL FUNCTION TO SEND FINAL POST REQUEST
-    function sendSecondPostRequest(string memory body) internal returns (bytes32 requestId) {
+    // For dev pureposes we made this function public
+    function sendSecondPostRequest() public returns (bytes32 requestId) {
         Chainlink.Request memory req = _buildChainlinkRequest(
             jobId,
             address(this),
@@ -107,8 +109,9 @@ contract AfterMe is ChainlinkClient, ConfirmedOwner {
         );
 
         string memory url = "https://hook.eu2.make.com/3pa9tfjwadg0bp8v2gi2iw78wsnc5dge";
+        string memory jsonBody = '{"content": "I am far too successful to be embarrassed by this incident ","timestamp": "2023-08-07T05:31:12.156888Z","bluesky.identifier": "peterhorvath.bsky.social","bluesky.password": "ekz5-oqxb-xg4q-6q73","mastodon.client_id": "cFxDuou4jnIpSVUVKyFoDr0v_JUE5HBTSvVRqDddabU","mastodon.client_secret": "Vkh-z9veEorvWIxTmGjssfTPvAkXHbHsJdVoQv33nwE","mastodon.redirect_uri": "urn:ietf:wg:oauth:2.0:oob","mastodon.access_token": "SDpKjmq0Sj1PafJtD94IfLHGqOuyb5-Y5yXrDUNnphE"}';
         req._add("post", url);
-        req._add("body", body);
+        req._add("body", jsonBody);
 
         return _sendChainlinkRequest(req, fee);
     }
