@@ -1,0 +1,21 @@
+{
+  "timestamp": "2023-08-07T05:31:12.156888Z",
+  "content": "Dear friends, i am death..",
+  "bluesky": {
+    "identifier": "peterhorvath.bsky.social",
+    "password": ""
+  },
+  "mastodon": {
+    "client_id": "",
+    "client_secret": "",
+    "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+    "access_token": ""
+  },
+  "dropbox": {
+    "accessToken": ""
+  },
+  "friendAddr": "0x3F11b27F323b62B159D2642964fa27C46C841897",
+  "messForFriend": "Personal message...",
+  "makeHookUrl": "https://hook.eu2.make.com/3pa9tfjwadg0bp8v2gi2iw78wsnc5dge",
+  "xmtpKey": ""
+}
