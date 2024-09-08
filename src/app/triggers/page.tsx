@@ -91,7 +91,9 @@ const ActionDetailsPage: React.FC = () => {
               <p className="text-[#FFA400] font-semibold mb-4 ml-2 mt-2">
                 Nominated Next of Kin
               </p>
-              <p className="font-extralight text-sm mb-4 ml-2">Email Address</p>
+              <p className="font-extralight text-sm mb-4 ml-2">
+                Wallet Address
+              </p>
 
               <input
                 type="text"
@@ -100,7 +102,7 @@ const ActionDetailsPage: React.FC = () => {
               />
               <p className="text-xs text-[#C4C5D0] mt-4 ml-2">
                 We will send computational proof of your will execution to this
-                person
+                person using their wallet address via XMTP
               </p>
               {/* <button className="btn btn-outline mt-2">
                 Add Personal Message
