@@ -4,6 +4,11 @@ const { Client } = require("@xmtp/xmtp-js");
 const ethers = require("ethers");
 require("dotenv").config();
 
+// !!!
+// BECAUSE OF BUF IN CONSTRUCTION XMT CLIENT IN NEXT_JS
+// WE MOVE THIS LOGIC TO SEPARATE EXPRESS SERVER
+// !!!
+
 function base64ToUint8Array(base64) {
   const binaryString = Buffer.from(base64, 'base64').toString('binary'); // Use Buffer to handle base64
   const len = binaryString.length;
