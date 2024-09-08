@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import * as LitJsSdk from "@lit-protocol/lit-node-client";
 import { ethers } from "ethers";
 import {
@@ -8,7 +10,7 @@ import {
 } from "@lit-protocol/auth-helpers";
 
 // Define the Lit class
-class Lit {
+export class Lit {
   constructor(chain) {
     this.chain = chain;
     this.litNodeClient = null;
