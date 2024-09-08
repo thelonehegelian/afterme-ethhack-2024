@@ -49,9 +49,18 @@ export default function LandingPage() {
             <span className="font-semibold italic">after you</span> with{" "}
             <span className="font-semibold italic">AfterMe</span>
           </p>
-          <Link href="select-action">
-            <button className="btn btn-secondary mt-10">Start Now</button>
-          </Link>
+          <div className="flex flex-row">
+            <Link href="select-action">
+              <button className="btn btn-secondary mt-10 mx-4">
+                Start Now
+              </button>
+            </Link>
+            <Link href="/afterme-registry-login">
+              <button className="btn btn-primary mt-10">
+                AfterMe Registry
+              </button>
+            </Link>
+          </div>
         </div>
       </main>
     </>

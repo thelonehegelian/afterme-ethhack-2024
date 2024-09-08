@@ -1,19 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
+import { atom, useAtom } from "jotai";
 
 import Navbar from "../components/Navbar";
 import Container from "../components/BoxContainer";
 import { CarbonNetwork4 } from "../icons";
 import Link from "next/link";
+import {
+  attestationAddressAtom,
+  nextToKinAddressAtom,
+  selectedTriggerAtom,
+} from "../store";
 
 const ActionDetailsPage: React.FC = () => {
-  const [selectedTrigger, setSelectedTrigger] = useState<number | null>(null);
+  const [selectedTrigger, setSelectedTrigger] = useAtom(selectedTriggerAtom);
+  const [attestationAddress, setAttestationAddress] = useAtom(
+    attestationAddressAtom
+  );
+  const [nextToKinAddress, setNextToKinAddress] = useAtom(nextToKinAddressAtom);
+
   const attestationTriggers = [
     "Insurance Company Attestation",
     "User Attestation",
     "Family Member Attestation",
     "Third Party Attestation",
   ];
+
   return (
     <>
       <Navbar />
@@ -43,7 +55,7 @@ const ActionDetailsPage: React.FC = () => {
                           type="radio"
                           name="radio-2"
                           className="radio radio-primary"
-                          defaultChecked={index === 0}
+                          checked={selectedTrigger === index}
                           onChange={() => setSelectedTrigger(index)}
                         />
                         <span className="label-text ml-12">{trigger}</span>
@@ -53,6 +65,10 @@ const ActionDetailsPage: React.FC = () => {
                           type="text"
                           placeholder="Attestation Address"
                           className="input input-bordered w-full max-w-xs ml-20"
+                          value={attestationAddress}
+                          onChange={(e) =>
+                            setAttestationAddress(e.target.value)
+                          }
                         />
                       )}
                     </div>
@@ -75,6 +91,8 @@ const ActionDetailsPage: React.FC = () => {
                 type="text"
                 placeholder="Attestation Address"
                 className="input input-bordered w-full max-w-xs ml-2"
+                value={attestationAddress}
+                onChange={(e) => setAttestationAddress(e.target.value)}
               />
               <p className="text-xs text-[#C4C5D0] mt-4 ml-2">
                 We will listen to this attestation to trigger your plan
@@ -98,6 +116,7 @@ const ActionDetailsPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Attestation Address"
+                value={nextToKinAddress}
                 className="input input-bordered w-full max-w-xs ml-2"
               />
               <p className="text-xs text-[#C4C5D0] mt-4 ml-2">
