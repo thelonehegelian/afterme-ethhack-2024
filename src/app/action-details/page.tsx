@@ -1,10 +1,12 @@
+"use client";
 import React from "react";
-import type { SVGProps } from "react";
+import { useAtom } from "jotai";
 import Navbar from "../components/Navbar";
 import Container from "../components/BoxContainer";
 import { CarbonNetwork4 } from "../icons";
 import Link from "next/link";
 import { IcBaselineSnapchat, MdiGoogle } from "../icons";
+import { finalPost } from "../store"; // Import the atom
 
 const ActionDetailsPage: React.FC = () => {
   const detailedActions = [
@@ -12,6 +14,9 @@ const ActionDetailsPage: React.FC = () => {
     "Account Deletion or Deactivation",
     "Profile Conversion",
   ];
+
+  const [textareaValue, setTextareaValue] = useAtom(finalPost);
+
   return (
     <>
       <Navbar />
@@ -74,6 +79,8 @@ const ActionDetailsPage: React.FC = () => {
                   width: "482px",
                   height: "154px",
                 }}
+                value={textareaValue}
+                onChange={(e) => setTextareaValue(e.target.value)}
               ></textarea>
             </Container>
           </div>
@@ -88,15 +95,3 @@ const ActionDetailsPage: React.FC = () => {
   );
 };
 export default ActionDetailsPage;
-
-{
-  /* <div className="flex items-center mb-4">
-  <CarbonNetwork4 width="2em" height="2em" />
-  <h1
-    className="font-normal ml-4 text-[48px] leading-[54px] text-left"
-    style={{ fontFamily: "DM Serif Text" }}
-  >
-    Social Media Plan
-  </h1>
-</div>; */
-}
