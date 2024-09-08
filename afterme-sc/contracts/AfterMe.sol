@@ -6,7 +6,7 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
 import "hardhat/console.sol";
 
-contract TimedExecution is ChainlinkClient, ConfirmedOwner {
+contract AfterMe is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
 
     uint256 public executeAfterTimestamp;

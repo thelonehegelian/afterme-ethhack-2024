@@ -6,7 +6,7 @@ async function main() {
 
     console.log("Deploying contracts with the account:", deployer.address);
 
-    const AfterMe = await ethers.getContractFactory("AfterMe.sol");
+    const AfterMe = await ethers.getContractFactory("AfterMe");
     const contract = await AfterMe.deploy();
 
     console.log("Contract deployed to address:", contract.address);

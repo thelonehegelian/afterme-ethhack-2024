@@ -18,7 +18,8 @@ module.exports = {
     sources: "./contracts",
   },
   ignore: [
-    "contracts/LitAccess.sol"
+    "contracts/LitAccess.sol",
+    "contracts/AfterMeApi.sol"
   ],
   // networks: {
   //   yellowstone: {
